@@ -27,6 +27,45 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//------------->Appointments<-----------------
+
+app.MapGet("/api/appointments", (HillarysHairCareDbContext db) =>
+{
+    return db.Appointments
+    .Include(a => a.Stylist)
+    .Include(a => a.Customer)
+    .OrderBy(a => a.StartTime)
+    .Select(a => new AppointmentDTO
+    {
+        Id = a.Id,
+        StartTime = a.StartTime,
+        StylistId = a.StylistId,
+        Stylist = new StylistDTO
+        {
+            Id = a.Stylist.Id,
+            FirstName = a.Stylist.FirstName,
+            LastName = a.Stylist.LastName,
+            PhoneNumber = a.Stylist.PhoneNumber,
+            Email = a.Stylist.Email,
+            IsActive = a.Stylist.IsActive
+        },
+        CustomerId = a.CustomerId,
+        Customer = new CustomerDTO
+        {
+            Id = a.Customer.Id,
+            FirstName = a.Customer.FirstName,
+            LastName = a.Customer.LastName,
+            PhoneNumber = a.Customer.PhoneNumber,
+            Email = a.Customer.Email
+        },
+        Services = a.Services.Select(s => new ServiceDTO
+        {
+            Id = s.Id,
+            Name = s.Name,
+            Price = s.Price
+        }).ToList()
+    });
+});
 
 app.Run();
 
