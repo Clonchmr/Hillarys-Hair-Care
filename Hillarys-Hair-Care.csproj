@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Hillarys_Hair_Care</RootNamespace>
     <UserSecretsId>c515309b-c4d8-44da-90f6-eb4f97bc4756</UserSecretsId>
