@@ -237,6 +237,13 @@ app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
         }).ToList()
     });
 });
+
+app.MapPost("/api/stylists", (HillarysHairCareDbContext db, Stylist stylist) => 
+{
+    db.Stylists.Add(stylist);
+    db.SaveChanges();
+    return Results.Created($"/api/stylists/{stylist.Id}", stylist);
+});
 app.Run();
 
 

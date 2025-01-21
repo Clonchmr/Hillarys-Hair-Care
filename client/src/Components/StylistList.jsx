@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getStylists } from "../data/stylistData";
 import { Button, Table } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export const StylistList = () => {
   const [stylists, setStylists] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getStylists().then(setStylists);
@@ -12,6 +15,16 @@ export const StylistList = () => {
     <div className="container">
       <div className="sub-menu bg-warning mt-4 mb-2">
         <h4>Stylists</h4>
+        <Button
+          className="btn mb-2"
+          color="dark"
+          outline
+          onClick={() => {
+            navigate("/stylists/new");
+          }}
+        >
+          Add New
+        </Button>
       </div>
       <Table>
         <thead>
