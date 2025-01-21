@@ -59,6 +59,15 @@ export const AppointmentList = () => {
                 )}
               </td>
               <td>{getCostAsDollars(a.totalCost)}</td>
+              <td>
+                <Button
+                  onClick={() => {
+                    navigate(`/appointments/${a.id}`);
+                  }}
+                >
+                  Details
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
