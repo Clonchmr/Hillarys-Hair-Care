@@ -4,6 +4,10 @@ export const getAppointments = () => {
   return fetch(_apiString).then((res) => res.json());
 };
 
+export const getAppointmentById = (id) => {
+  return fetch(`${_apiString}/${id}`).then((res) => res.json());
+};
+
 export const addNewAppointment = (appointment) => {
   return fetch(_apiString, {
     method: "POST",
