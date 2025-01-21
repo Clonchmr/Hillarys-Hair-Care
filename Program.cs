@@ -205,6 +205,7 @@ app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
 {
     return db.Stylists
     .Include(s => s.Appointments)
+    .Where(s => s.IsActive == true)
     .Select(s => new StylistDTO
     {
         Id = s.Id,
