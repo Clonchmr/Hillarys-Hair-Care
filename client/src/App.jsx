@@ -10,7 +10,7 @@ function App() {
         <Nav navbar>
           <NavbarBrand href="/">Hillary's Hair Care</NavbarBrand>
           <NavItem>
-            <NavLink href="appointments">Appointments</NavLink>
+            <NavLink href="/appointments">Appointments</NavLink>
           </NavItem>
         </Nav>
       </Navbar>
