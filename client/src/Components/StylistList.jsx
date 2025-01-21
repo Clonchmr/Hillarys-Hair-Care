@@ -44,7 +44,14 @@ export const StylistList = () => {
               <td>{s.phoneNumber}</td>
               <td>{s.email}</td>
               <td>
-                <Button>See Details</Button>
+                <Button
+                  className="btn"
+                  onClick={() => {
+                    navigate(`/stylists/${s.id}`);
+                  }}
+                >
+                  See Details
+                </Button>
               </td>
             </tr>
           ))}
