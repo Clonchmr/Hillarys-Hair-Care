@@ -1,35 +1,32 @@
 import { useEffect, useState } from "react";
 import { getAppointments } from "../data/appointmentsData";
-import { Table } from "reactstrap";
+import { Button, Table } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { convertTimeTo12, getCostAsDollars } from "../exports";
 
 export const AppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAppointments().then(setAppointments);
   }, []);
 
-  const convertTimeTo12 = (time24) => {
-    let [hours, minutes] = time24.split(":").map(Number);
-
-    const amOrPM = hours >= 12 ? "PM" : "AM";
-
-    hours = hours % 12 || 12;
-
-    return `${hours}:${String(minutes).padStart(2, "0")} ${amOrPM}`;
-  };
-
-  const getCostAsDollars = (cost) => {
-    const formattedNumber = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(cost);
-    return formattedNumber;
-  };
   return (
     <div className="container">
       <div className="sub-menu bg-warning mt-4 mb-2">
         <h4>Appointments</h4>
+        <Button
+          className="mb-2"
+          color="dark"
+          outline
+          onClick={() => {
+            navigate("/appointments/new");
+          }}
+        >
+          Add New
+        </Button>
       </div>
       <Table>
         <thead>

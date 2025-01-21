@@ -67,6 +67,124 @@ app.MapGet("/api/appointments", (HillarysHairCareDbContext db) =>
     });
 });
 
+app.MapPost("/api/appointments", async (HillarysHairCareDbContext db, Appointment appointment) =>
+{
+    List<int> serviceIds = appointment.Services.Select(s => s.Id).ToList();
+    List<Service> services = await db.Services
+    .Where(s => serviceIds
+    .Contains(s.Id))
+    .ToListAsync();
+
+    appointment.Services = services;
+
+    db.Appointments.Add(appointment);
+    db.SaveChanges();
+
+    return Results.Created($"api/appointments/{appointment.Id}", new AppointmentDTO
+    {
+        Id = appointment.Id,
+        StartTime = appointment.StartTime,
+        StylistId = appointment.StylistId,
+        CustomerId = appointment.CustomerId,
+        Services = appointment.Services.Select(s => new ServiceDTO
+        {
+            Id = s.Id,
+            Name = s.Name,
+            Price = s.Price
+        }).ToList()
+    });
+});
+
+
+//------------>Services<--------------
+
+app.MapGet("/api/services", (HillarysHairCareDbContext db) => 
+{
+    return db.Services
+    .Select(s => new ServiceDTO
+    {
+        Id = s.Id,
+        Name = s.Name,
+        Price = s.Price
+    }).ToList();
+});
+
+//----------->Customers<---------------
+
+app.MapGet("/api/customers", (HillarysHairCareDbContext db) => 
+{
+    return db.Customers
+    .Include(c => c.Appointments)
+    .ThenInclude(a => a.Stylist)
+    .Select(c => new CustomerDTO
+    {
+        Id = c.Id,
+        FirstName = c.FirstName,
+        LastName = c.LastName,
+        PhoneNumber = c.PhoneNumber,
+        Email = c.Email,
+        Appointments = c.Appointments.Select(a => new AppointmentDTO
+        {
+            Id = a.Id,
+            StartTime = a.StartTime,
+            StylistId = a.StylistId,
+            Stylist = new StylistDTO
+            {
+                Id = a.Stylist.Id,
+                FirstName = a.Stylist.FirstName,
+                LastName = a.Stylist.LastName,
+                PhoneNumber = a.Stylist.PhoneNumber,
+                Email = a.Stylist.Email,
+                IsActive = a.Stylist.IsActive
+            },
+            CustomerId = c.Id,
+            Services = a.Services.Select(s => new ServiceDTO
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price
+            }).ToList()
+        }).ToList()
+    });
+});
+
+//---------->Stylists<---------------
+
+app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
+{
+    return db.Stylists
+    .Include(s => s.Appointments)
+    .Select(s => new StylistDTO
+    {
+        Id = s.Id,
+        FirstName = s.FirstName,
+        LastName = s.LastName,
+        PhoneNumber = s.PhoneNumber,
+        Email = s.Email,
+        IsActive = s.IsActive,
+        Appointments = s.Appointments.Select(a => new AppointmentDTO
+        {
+            Id = a.Id,
+            StartTime = a.StartTime,
+            StylistId = s.Id,
+            CustomerId = a.CustomerId,
+            Customer = new CustomerDTO
+            {
+                Id = a.Customer.Id,
+                FirstName = a.Customer.FirstName,
+                LastName = a.Customer.LastName,
+                PhoneNumber = a.Customer.PhoneNumber,
+                Email = a.Customer.Email
+            },
+            Services = a.Services.Select(s => new ServiceDTO
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price
+            }).ToList()
+        }).ToList()
+    });
+});
 app.Run();
 
 
