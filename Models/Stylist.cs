@@ -13,6 +13,6 @@ public class Stylist
     public string PhoneNumber { get; set; }
     [Required]
     public string Email { get; set; }
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
     public List<Appointment> Appointments { get; set; } = new List<Appointment>();
 }
