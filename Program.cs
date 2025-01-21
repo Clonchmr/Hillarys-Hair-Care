@@ -133,6 +133,19 @@ app.MapPost("/api/appointments", async (HillarysHairCareDbContext db, Appointmen
     });
 });
 
+app.MapDelete("/api/appointments/{id}", (HillarysHairCareDbContext db, int id) => 
+{
+    Appointment appointment = db.Appointments.SingleOrDefault(a => a.Id == id);
+
+    if (appointment == null)
+    {
+        return Results.NotFound();
+    }
+
+    db.Appointments.Remove(appointment);
+    db.SaveChanges();
+    return Results.NoContent();
+});
 
 //------------>Services<--------------
 

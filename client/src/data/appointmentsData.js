@@ -17,3 +17,12 @@ export const addNewAppointment = (appointment) => {
     body: JSON.stringify(appointment),
   });
 };
+
+export const cancelAppointment = (id) => {
+  return fetch(`${_apiString}/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
