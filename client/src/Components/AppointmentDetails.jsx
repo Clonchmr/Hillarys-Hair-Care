@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -8,7 +9,10 @@ import {
   ListGroup,
   ListGroupItem,
 } from "reactstrap";
-import { getAppointmentById } from "../data/appointmentsData";
+import {
+  cancelAppointment,
+  getAppointmentById,
+} from "../data/appointmentsData";
 import { convertTimeTo12, getCostAsDollars } from "../exports";
 
 export const AppointmentDetails = () => {
@@ -16,9 +20,15 @@ export const AppointmentDetails = () => {
 
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getAppointmentById(id).then(setAppointment);
   }, [id]);
+
+  const handleCancelAppointment = (appointmentId) => {
+    cancelAppointment(appointmentId).then(navigate("/appointments"));
+  };
   return (
     <div className="container">
       <Card className="my-2">
@@ -62,6 +72,14 @@ export const AppointmentDetails = () => {
           <CardText>
             Total Cost: {getCostAsDollars(appointment.totalCost) || "$0.00"}
           </CardText>
+          <Button
+            className="btn"
+            onClick={() => {
+              handleCancelAppointment(id);
+            }}
+          >
+            Cancel Appointment
+          </Button>
         </CardBody>
       </Card>
     </div>
