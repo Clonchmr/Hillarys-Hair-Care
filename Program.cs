@@ -3,6 +3,7 @@ using HillarysHairCare.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using System.Reflection.Metadata.Ecma335;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -205,6 +206,7 @@ app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
 {
     return db.Stylists
     .Include(s => s.Appointments)
+    .ThenInclude(a => a.Customer)
     .Where(s => s.IsActive == true)
     .Select(s => new StylistDTO
     {
@@ -236,6 +238,44 @@ app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
             }).ToList()
         }).ToList()
     });
+});
+
+app.MapGet("/api/stylists/{id}", (HillarysHairCareDbContext db, int id) =>
+{
+    return db.Stylists
+    .Include(s => s.Appointments)
+    .ThenInclude(a => a.Customer)
+    .Select(s => new StylistDTO
+    {
+        Id = s.Id,
+        FirstName = s.FirstName,
+        LastName = s.LastName,
+        PhoneNumber = s.PhoneNumber,
+        Email = s.Email,
+        Appointments = s.Appointments.Select(a => new AppointmentDTO
+        {
+            Id = a.Id,
+            StartTime = a.StartTime,
+            CustomerId = a.CustomerId,
+            Customer = new CustomerDTO
+            {
+                Id = a.Customer.Id,
+                FirstName = a.Customer.FirstName,
+                LastName = a.Customer.LastName,
+                PhoneNumber = a.Customer.PhoneNumber,
+                Email = a.Customer.Email
+            },
+            Services = a.Services.Select(s => new ServiceDTO
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price
+            }).ToList()
+        }).ToList()
+    }).SingleOrDefault(s => s.Id == id) is StylistDTO stylist ? 
+    Results.Ok(stylist) :
+    Results.NotFound();
+    
 });
 
 app.MapPost("/api/stylists", (HillarysHairCareDbContext db, Stylist stylist) => 
