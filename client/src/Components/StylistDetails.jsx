@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, CardBody, CardText, Table } from "reactstrap";
-import { getStylistById } from "../data/stylistData";
+import { deactivateStylist, getStylistById } from "../data/stylistData";
 import { convertTimeTo12, getCostAsDollars } from "../exports";
 
 export const StylistDetails = () => {
@@ -14,6 +14,12 @@ export const StylistDetails = () => {
   useEffect(() => {
     getStylistById(id).then(setStylist);
   }, [id]);
+
+  const handleDeactivate = (stylistId) => {
+    deactivateStylist(stylistId).then(() => {
+      navigate("/stylists");
+    });
+  };
   return (
     <div className="container">
       <Card className="mt-5">
@@ -34,7 +40,14 @@ export const StylistDetails = () => {
             <div>
               <CardText>{`Last Name: ${stylist.lastName}`}</CardText>
               <CardText>{`Email: ${stylist.email}`}</CardText>
-              <Button className="mt-4">Deactivate</Button>
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  handleDeactivate(id);
+                }}
+              >
+                Deactivate
+              </Button>
             </div>
           </div>
         </CardBody>
