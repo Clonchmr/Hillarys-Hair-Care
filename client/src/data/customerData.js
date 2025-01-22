@@ -17,3 +17,13 @@ export const updateCustomer = (id, customerObj) => {
     body: JSON.stringify(customerObj),
   });
 };
+
+export const newCustomer = (customerObj) => {
+  return fetch(_apiString, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(customerObj),
+  });
+};
