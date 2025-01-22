@@ -15,7 +15,14 @@ export const CustomerList = () => {
     <div className="container">
       <div className="sub-menu bg-warning mt-4 mb-2">
         <h4>Customers</h4>
-        <Button className="btn mb-2" color="dark" outline>
+        <Button
+          className="btn mb-2"
+          color="dark"
+          outline
+          onClick={() => {
+            navigate("/customers/new");
+          }}
+        >
           Add New
         </Button>
       </div>

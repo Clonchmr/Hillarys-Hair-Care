@@ -258,6 +258,13 @@ app.MapPut("/api/customers/{id}", (int id, HillarysHairCareDbContext db, Custome
     return Results.NoContent();
 });
 
+app.MapPost("/api/customers", (HillarysHairCareDbContext db, Customer customer) => 
+{
+    db.Customers.Add(customer);
+    db.SaveChanges();
+    return Results.Created($"/api/customers/{customer.Id}", customer);
+});
+
 //---------->Stylists<---------------
 
 app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
