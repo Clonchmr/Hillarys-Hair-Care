@@ -7,3 +7,13 @@ export const getCustomers = () => {
 export const getCustomerById = (id) => {
   return fetch(`${_apiString}/${id}`).then((res) => res.json());
 };
+
+export const updateCustomer = (id, customerObj) => {
+  return fetch(`${_apiString}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(customerObj),
+  });
+};

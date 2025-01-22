@@ -240,6 +240,24 @@ app.MapGet("/api/customers/{id}", (int id, HillarysHairCareDbContext db) =>
     Results.NoContent();
 });
 
+app.MapPut("/api/customers/{id}", (int id, HillarysHairCareDbContext db, Customer customer) => 
+{
+    Customer customerToUpdate = db.Customers.SingleOrDefault(c => c.Id == id);
+
+    if (customerToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+
+    customerToUpdate.FirstName = customer.FirstName;
+    customerToUpdate.LastName = customer.LastName;
+    customerToUpdate.PhoneNumber = customer.PhoneNumber;
+    customerToUpdate.Email = customer.Email;
+
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
 //---------->Stylists<---------------
 
 app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>

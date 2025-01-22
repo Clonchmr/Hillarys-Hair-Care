@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCustomerById } from "../data/customerData";
-import { Card, CardBody, CardText, Table } from "reactstrap";
+import { Button, Card, CardBody, CardText, Table } from "reactstrap";
 import { convertTimeTo12, getCostAsDollars } from "../exports";
 
 export const CustomerDetails = () => {
   const [customer, setCustomer] = useState({});
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCustomerById(id).then(setCustomer);
@@ -20,6 +22,14 @@ export const CustomerDetails = () => {
             <div>
               <CardText>{`First Name: ${customer.firstName}`}</CardText>
               <CardText>{`Last Name: ${customer.lastName}`}</CardText>
+              <Button
+                className="btn"
+                onClick={() => {
+                  navigate(`/customers/${id}/edit`);
+                }}
+              >
+                Edit
+              </Button>
             </div>
             <div>
               <CardText>{`Phone Number: ${customer.phoneNumber}`}</CardText>
