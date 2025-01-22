@@ -10,6 +10,7 @@ import { NewStylist } from "./Components/Forms/NewStylist.jsx";
 import { StylistDetails } from "./Components/StylistDetails.jsx";
 import { EditStylist } from "./Components/Forms/EditStylist.jsx";
 import { CustomerList } from "./Components/CustomerList.jsx";
+import { CustomerDetails } from "./Components/CustomerDetails.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")).render(
         </Route>
         <Route path="customers">
           <Route index element={<CustomerList />} />
+          <Route path=":id" element={<CustomerDetails />} />
         </Route>
       </Route>
     </Routes>

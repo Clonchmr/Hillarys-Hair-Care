@@ -38,7 +38,7 @@ export const StylistDetails = () => {
               </Button>
             </div>
             <div>
-              <CardText>{`Last Name: ${stylist.lastName}`}</CardText>
+              <CardText>{`Phone Number: ${stylist.phoneNumber}`}</CardText>
               <CardText>{`Email: ${stylist.email}`}</CardText>
               <Button
                 className="mt-4"

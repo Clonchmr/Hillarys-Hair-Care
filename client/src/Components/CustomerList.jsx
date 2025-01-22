@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { getCustomers } from "../data/customerData";
 import { Button, Table } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCustomers().then(setCustomers);
@@ -34,7 +37,14 @@ export const CustomerList = () => {
               <td>{c.phoneNumber}</td>
               <td>{c.email}</td>
               <td>
-                <Button>Details</Button>
+                <Button
+                  className="btn"
+                  onClick={() => {
+                    navigate(`/customers/${c.id}`);
+                  }}
+                >
+                  Details
+                </Button>
               </td>
             </tr>
           ))}

@@ -200,6 +200,46 @@ app.MapGet("/api/customers", (HillarysHairCareDbContext db) =>
     });
 });
 
+app.MapGet("/api/customers/{id}", (int id, HillarysHairCareDbContext db) =>
+{
+    return db.Customers
+    .Include(c => c.Appointments)
+    .ThenInclude(a => a.Stylist)
+    .Select(c => new CustomerDTO
+    {
+        Id = c.Id,
+        FirstName = c.FirstName,
+        LastName = c.LastName,
+        PhoneNumber = c.PhoneNumber,
+        Email = c.Email,
+        Appointments = c.Appointments
+        .OrderBy(a => a.StartTime)
+        .Select(a => new AppointmentDTO
+        {
+            Id = a.Id,
+            StartTime = a.StartTime,
+            StylistId = a.StylistId,
+            Stylist = new StylistDTO
+            {
+                Id = a.Stylist.Id,
+                FirstName = a.Stylist.FirstName,
+                LastName = a.Stylist.LastName,
+                PhoneNumber = a.Stylist.PhoneNumber,
+                Email = a.Stylist.Email
+            },
+            CustomerId = a.CustomerId,
+            Services = a.Services.Select(s => new ServiceDTO
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price
+            }).ToList()
+        }).ToList()
+    }).SingleOrDefault(c => c.Id == id) is CustomerDTO customer ? 
+    Results.Ok(customer) : 
+    Results.NoContent();
+});
+
 //---------->Stylists<---------------
 
 app.MapGet("/api/stylists", (HillarysHairCareDbContext db) =>
@@ -252,7 +292,9 @@ app.MapGet("/api/stylists/{id}", (HillarysHairCareDbContext db, int id) =>
         LastName = s.LastName,
         PhoneNumber = s.PhoneNumber,
         Email = s.Email,
-        Appointments = s.Appointments.Select(a => new AppointmentDTO
+        Appointments = s.Appointments
+        .OrderBy(a => a.StartTime)
+        .Select(a => new AppointmentDTO
         {
             Id = a.Id,
             StartTime = a.StartTime,
