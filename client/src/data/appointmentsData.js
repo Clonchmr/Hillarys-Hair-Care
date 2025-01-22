@@ -26,3 +26,13 @@ export const cancelAppointment = (id) => {
     },
   });
 };
+
+export const updateAppointment = (id, appointment) => {
+  return fetch(`${_apiString}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(appointment),
+  });
+};
