@@ -285,6 +285,20 @@ app.MapPost("/api/stylists", (HillarysHairCareDbContext db, Stylist stylist) =>
     return Results.Created($"/api/stylists/{stylist.Id}", stylist);
 });
 
+app.MapPost("/api/stylists/{id}/deactivate", (HillarysHairCareDbContext db, int id) =>
+{
+    Stylist stylistToDeactivate = db.Stylists.SingleOrDefault(s => s.Id == id);
+
+    if (stylistToDeactivate == null)
+    {
+        return Results.NotFound();
+    }
+
+    stylistToDeactivate.IsActive = false;
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
 app.MapPut("/api/stylists/{id}", (HillarysHairCareDbContext db, int id, Stylist stylist) => 
 {
     Stylist stylistToUpdate = db.Stylists.SingleOrDefault(s=> s.Id == id);

@@ -27,3 +27,12 @@ export const updateStylist = (id, stylistObj) => {
     body: JSON.stringify(stylistObj),
   });
 };
+
+export const deactivateStylist = (id) => {
+  return fetch(`${_apiString}/${id}/deactivate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
