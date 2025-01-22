@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, CardBody, CardText, Table } from "reactstrap";
 import { getStylistById } from "../data/stylistData";
 import { convertTimeTo12, getCostAsDollars } from "../exports";
@@ -8,6 +8,8 @@ export const StylistDetails = () => {
   const [stylist, setStylist] = useState({});
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getStylistById(id).then(setStylist);
@@ -20,7 +22,14 @@ export const StylistDetails = () => {
             <div>
               <CardText>{`First Name: ${stylist.firstName}`}</CardText>
               <CardText>{`Last Name: ${stylist.lastName}`}</CardText>
-              <Button className="mt-4">Edit</Button>
+              <Button
+                className="mt-4"
+                onClick={() => {
+                  navigate(`/stylists/edit/${id}`);
+                }}
+              >
+                Edit
+              </Button>
             </div>
             <div>
               <CardText>{`Last Name: ${stylist.lastName}`}</CardText>

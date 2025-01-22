@@ -17,3 +17,13 @@ export const addNewStylist = (stylistObj) => {
     body: JSON.stringify(stylistObj),
   });
 };
+
+export const updateStylist = (id, stylistObj) => {
+  return fetch(`${_apiString}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(stylistObj),
+  });
+};
