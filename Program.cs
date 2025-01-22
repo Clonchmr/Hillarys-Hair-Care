@@ -134,6 +134,39 @@ app.MapPost("/api/appointments", async (HillarysHairCareDbContext db, Appointmen
     });
 });
 
+app.MapPut("/api/appointments/{id}", async (int id, HillarysHairCareDbContext db, Appointment appointment) =>
+{
+    Appointment appointmentToUpdate = await db.Appointments.Include(a => a.Services).SingleOrDefaultAsync(a => a.Id == id);
+
+    if (appointmentToUpdate == null)
+    {
+        return Results.NotFound();
+    }
+
+    appointmentToUpdate.StylistId = appointment.StylistId;
+    appointmentToUpdate.CustomerId = appointment.CustomerId;
+
+    
+
+    List<Service> servicesToRemove = appointmentToUpdate.Services.ToList();
+
+    foreach(Service service in servicesToRemove)
+    {
+        appointmentToUpdate.Services.Remove(service);
+    }
+
+    await db.SaveChangesAsync();
+
+   List<int> newServiceIds = appointment.Services.Select(s => s.Id).ToList();
+    List<Service> newServices = await db.Services
+    .Where(s => newServiceIds.Contains(s.Id)).ToListAsync();
+
+    appointmentToUpdate.Services = newServices;
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
 app.MapDelete("/api/appointments/{id}", (HillarysHairCareDbContext db, int id) => 
 {
     Appointment appointment = db.Appointments.SingleOrDefault(a => a.Id == id);

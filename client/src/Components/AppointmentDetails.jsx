@@ -14,6 +14,7 @@ import {
   getAppointmentById,
 } from "../data/appointmentsData";
 import { convertTimeTo12, getCostAsDollars } from "../exports";
+import "../styles/appointments.css";
 
 export const AppointmentDetails = () => {
   const [appointment, setAppointment] = useState({});
@@ -73,12 +74,20 @@ export const AppointmentDetails = () => {
             Total Cost: {getCostAsDollars(appointment.totalCost) || "$0.00"}
           </CardText>
           <Button
-            className="btn"
+            className="btn cancelAppointment"
             onClick={() => {
               handleCancelAppointment(id);
             }}
           >
             Cancel Appointment
+          </Button>
+          <Button
+            className="btn editAppointment"
+            onClick={() => {
+              navigate(`/appointments/${id}/edit`);
+            }}
+          >
+            Edit Appointment
           </Button>
         </CardBody>
       </Card>

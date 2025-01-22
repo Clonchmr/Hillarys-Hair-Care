@@ -13,6 +13,7 @@ import { CustomerList } from "./Components/CustomerList.jsx";
 import { CustomerDetails } from "./Components/CustomerDetails.jsx";
 import { EditCustomer } from "./Components/Forms/EditCustomer.jsx";
 import { NewCustomer } from "./Components/Forms/NewCustomer.jsx";
+import { EditAppointment } from "./Components/Forms/EditAppointment.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<AppointmentList />} />
           <Route path="new" element={<NewAppointment />} />
           <Route path=":id" element={<AppointmentDetails />} />
+          <Route path=":id/edit" element={<EditAppointment />} />
         </Route>
         <Route path="stylists">
           <Route index element={<StylistList />} />
