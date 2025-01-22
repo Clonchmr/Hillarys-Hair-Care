@@ -11,6 +11,7 @@ import { StylistDetails } from "./Components/StylistDetails.jsx";
 import { EditStylist } from "./Components/Forms/EditStylist.jsx";
 import { CustomerList } from "./Components/CustomerList.jsx";
 import { CustomerDetails } from "./Components/CustomerDetails.jsx";
+import { EditCustomer } from "./Components/Forms/EditCustomer.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="customers">
           <Route index element={<CustomerList />} />
           <Route path=":id" element={<CustomerDetails />} />
+          <Route path=":id/edit" element={<EditCustomer />} />
         </Route>
       </Route>
     </Routes>
